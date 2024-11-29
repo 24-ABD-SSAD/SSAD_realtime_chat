@@ -6,7 +6,7 @@
 #
 # Structure for table "chat"
 #
-
+use Realtime_chat;
 CREATE TABLE `chat` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `send_id` bigint(20) NOT NULL COMMENT '发送人id',

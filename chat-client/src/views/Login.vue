@@ -2,9 +2,11 @@
   <div class="login">
     <el-row class="login-container ma lg:w-1200px w-full" type="flex" align="middle" justify="center">
         <el-col :lg="{span: 8}" :span="24">
+
             <el-card shadow="hover" class="p-20px">
-                <div class="text-3xl fw700 mb-20px animate-bounce-alt animate-count-infinite animate-duration-1s"  style="color: var(--ep-color-primary-light-3);" align="center">快来 Chat</div>
+
                 <el-form @keyup.enter="submitLogin(formRef)" ref="formRef" :rules="rules" size="large" :model="form">
+
                     <el-form-item prop="username">
                         <el-input
                             type="text"
@@ -69,13 +71,17 @@
                             @click="useTypeChange(formRef)"
                             >{{buttonText('text')}}</el-button>
                     </el-form-item>
+
                     <el-form-item>
                         <el-button class="w-full" :loading="form.loading" round type="primary" size="large" @click="submitLogin(formRef)">
                             {{buttonText('button')}}
                         </el-button>
                     </el-form-item>
+
                 </el-form>
+
             </el-card>
+
         </el-col>
     </el-row>
   </div>
@@ -274,8 +280,32 @@
 
 <style scoped lang="scss">
     .login{
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url('../../public/background/loginBackground.png'); /* 设置背景图片路径 */
+      background-size: cover; /* 背景图片覆盖整个元素 */
+      background-position: center; /* 背景图片居中 */
+      background-repeat: no-repeat; /* 不重复背景图片 */
         .login-container{
             min-height: calc(80vh - 60px);
         }
+      .p-20px{
+        width: 400px;
+        height: 350px;
+        margin: 0 auto;
+        padding: 20px;
+        box-shadow: 0 0 10px var(--shadow-color);
+        border-radius: 10px;
+        background-color: var(--background-color);
+        backdrop-filter: blur(3px); /* 模糊背景 */
+        border: 2px solid #dad8d8; /* 添加白色边框 */
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .p-20px{
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px var(--shadow-color);
+      }
     }
 </style>

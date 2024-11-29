@@ -7,7 +7,7 @@ module.exports = {
       host: "localhost",
       user: "root", // 数据库登录用户
       password: "Aa2868658911", // 数据库登录密码
-      database: "ssda" // 数据库名称
+      database: "Realtime_chat" // 数据库名称
   },
 
   // s3对象存储配置 https://www.lingshulian.com 超低成本的对象存储平台
