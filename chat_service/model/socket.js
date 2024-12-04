@@ -122,8 +122,8 @@ exports.updateTimestampById = function (id, timestamp) {
 
 exports.updateFriendsById = function (userIdA, userIdB) {
     getformemailsql = 'SELECT id FROM user WHERE email = ?';
-    dbQuery(getFriendsSql, [userIdB], (err, userIdB) => {
-
+    dbQuery(getformemailsql, [userIdB], (err, userIdB) => {
+        userIdB = userIdB[0].id;
     const getFriendsSql = 'SELECT friends FROM user WHERE id = ?';
     dbQuery(getFriendsSql, [userIdA], (err, resultsA) => {
 
