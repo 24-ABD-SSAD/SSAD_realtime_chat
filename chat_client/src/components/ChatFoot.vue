@@ -20,8 +20,28 @@
           </ul>
         </el-scrollbar>
       </el-popover>
-
-
+      <div class="ml-10px text-20px i-ep-picture-rounded !cursor-pointer">
+        <input
+          ref="referenceUpload"
+          class="opacity-0"
+          name="customerService"
+          type="file"
+          value=""
+          accept="image/*"
+          v-on:change="sendImage"
+        />
+      </div>
+      <div class="ml-10px text-20px i-ep-video-camera !cursor-pointer">
+        <input
+          ref="referenceUploadVideo"
+          class="opacity-0"
+          name="customerService"
+          type="file"
+          value=""
+          accept="video/*"
+          v-on:change="sendVideo"
+        />
+      </div>
     </el-row>
     <ChatEditor
         v-model="store.sendInfo"
@@ -53,6 +73,76 @@ function selectIcon(icon: string) {
 function blurHighLight(data: any) {
   store.sendInfo = data
 }
+async function sendImage(e: any) {
+  const fileData = e.target.files[0]
+  if (fileData != null) {
+    if (!/image\/\w+/.test(fileData.type)) {
+      return alert("Select an image file")
+    }
+    if (fileData.size > 1024 * 1024 * 10) {
+      return alert("Image size should be less than 10MB")
+    } else {
+      console.log(fileData)
+      const tempFilePath =  URL.createObjectURL(fileData)
+      let conversition = new Conversition(
+        store.userInfo.id,
+        store.recipient.id,
+        tempFilePath,
+        1,
+        0,
+        +new Date(),
+        "",
+        false,
+        store.userInfo.avatar
+      )
+      store.sendLocal(conversition)
+      const result: any = await _uploadFile(e.target.files[0])
+      if (result) {
+        conversition.content = result.url
+        store.sendInfos(conversition)
+      }
+      proxy.$refs.referenceUpload.value = null
+    }
+  }
+}
 
+async function sendVideo(e: any) {
+  const resultFile = e.target.files
+  const fileObj = new Blob([resultFile[0]], { type: "video/mp4" })
+  const tempFilePath = URL.createObjectURL(fileObj)
+  let conversition = new Conversition(
+    store.userInfo.id,
+    store.recipient.id,
+    tempFilePath,
+    2,
+    0,
+    +new Date(),
+    "",
+    false,
+    store.userInfo.avatar
+  )
+  store.sendLocal(conversition)
+  const result: any = await _uploadFile(e.target.files[0])
+  if (result) {
+    conversition.content = result.url
+    store.sendInfos(conversition)
+  }
+  proxy.$refs.referenceUploadVideo.value = null
+}
 
+function _uploadFile(tempFilePath: string) {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData()
+    formData.append("file", tempFilePath)
+    uploadFile(formData)
+      .then((res: any) => {
+        if(res.code === 200)
+          resolve(res.data)
+        resolve(undefined)
+      })
+      .catch(() => {
+        resolve(undefined)
+      })
+  })
+}
 </script>

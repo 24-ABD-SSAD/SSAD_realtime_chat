@@ -239,7 +239,6 @@ exports.updateGroupHistoryById = function (GroupHistory, id) {
 exports.addMemberToGroup = function (groupId, memberId) {
     console.log(groupId, memberId)
     return new Promise((resolve, reject) => {
-        // 获取当前群组的成员列表
         try {
             const getMembersSql = 'SELECT members FROM `group` WHERE group_id = ?';
             dbQuery(getMembersSql, [groupId], (err, groupResults) => {
@@ -248,18 +247,15 @@ exports.addMemberToGroup = function (groupId, memberId) {
 
                 const members = groupResults[0].members ? groupResults[0].members.split(',').map(id => parseInt(id, 10)) : [];
 
-                // 将新的成员ID添加到成员列表中
                 if (!members.includes(memberId)) {
                     members.push(memberId);
                 }
 
-                // 更新数据库中的群组成员列表
                 const updateMembers = members.join(',');
                 const updateGroupSql = 'UPDATE `group` SET members = ? WHERE group_id = ?';
                 dbQuery(updateGroupSql, [updateMembers, groupId], (updateGroupErr) => {
                     if (updateGroupErr) reject(info.error("添加成员异常"))
 
-                    // 获取用户的群组列表
                     const getUserGroupsSql = 'SELECT `groups`FROM user WHERE id = ?';
                     dbQuery(getUserGroupsSql, [memberId], (err, userResults) => {
                         if (err) reject(info.error("添加用户失败"))
@@ -268,12 +264,10 @@ exports.addMemberToGroup = function (groupId, memberId) {
 
                         const userGroups = userResults[0].groups ? userResults[0].groups.split(',').map(id => parseInt(id, 10)) : [];
 
-                        // 将群组ID添加到用户的群组列表中
                         if (!userGroups.includes(groupId)) {
                             userGroups.push(groupId);
                         }
 
-                        // 更新数据库中的用户群组列表
                         const updateUserGroups = userGroups.join(',');
                         const updateUserSql = 'UPDATE user SET `groups` = ? WHERE id = ?';
                         dbQuery(updateUserSql, [updateUserGroups, memberId], (updateUserErr) => {
@@ -292,9 +286,7 @@ exports.addMemberToGroup = function (groupId, memberId) {
 
 exports.removeMemberFromGroup = function (groupId, memberId) {
     return new Promise((resolve, reject) => {
-        // 获取当前群组的成员列表
         try {
-            // 获取当前群组的成员列表
             const getMembersSql = 'SELECT members FROM `group` WHERE group_id = ?';
             dbQuery(getMembersSql, [groupId], (err, groupResults) => {
                 if (err) return callback(err);
@@ -302,16 +294,13 @@ exports.removeMemberFromGroup = function (groupId, memberId) {
 
                 let members = groupResults[0].members ? groupResults[0].members.split(',').map(id => parseInt(id, 10)) : [];
 
-                // 从成员列表中移除指定的成员ID
                 members = members.filter(id => id !== memberId);
 
-                // 更新数据库中的群组成员列表
                 const updateMembers = members.join(',');
                 const updateGroupSql = 'UPDATE `group` SET members = ? WHERE group_id = ?';
                 dbQuery(updateGroupSql, [updateMembers, groupId], (updateGroupErr) => {
                     if (updateGroupErr) return callback(updateGroupErr);
 
-                    // 获取用户的群组列表
                     const getUserGroupsSql = 'SELECT `groups` FROM user WHERE id = ?';
                     dbQuery(getUserGroupsSql, [memberId], (err, userResults) => {
                         if (err) return callback(err);
@@ -319,10 +308,10 @@ exports.removeMemberFromGroup = function (groupId, memberId) {
 
                         let userGroups = userResults[0].groups ? userResults[0].groups.split(',').map(id => parseInt(id, 10)) : [];
 
-                        // 从用户的群组列表中移除群组ID
+      
                         userGroups = userGroups.filter(id => id !== groupId);
 
-                        // 更新数据库中的用户群组列表
+              
                         const updateUserGroups = userGroups.join(',');
                         const updateUserSql = 'UPDATE user SET `groups` = ? WHERE id = ?';
                         dbQuery(updateUserSql, [updateUserGroups, memberId], (updateUserErr) => {
@@ -341,7 +330,6 @@ exports.removeMemberFromGroup = function (groupId, memberId) {
 
 exports.dissolveGroup = function (groupId) {
     return new Promise((resolve, reject) => {
-        // 删除指定群组ID的行
         try {
             const deleteGroupSql = 'DELETE FROM `group` WHERE group_id = ?';
             dbQuery(deleteGroupSql, [groupId], (err, results) => {

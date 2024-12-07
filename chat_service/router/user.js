@@ -11,8 +11,6 @@ router.get('/userInfo', getUserInfo)
 router.get('/userList', getUserList)
 
 router.post('/login', login)
-
-
 router.post('/reguser', expressJoi(reguserRule), addUser)
 
 

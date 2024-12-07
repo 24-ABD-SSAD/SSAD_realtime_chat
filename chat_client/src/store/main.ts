@@ -98,24 +98,19 @@ export const useMainStore = defineStore({
             this.editor.config.showFullScreen = false
             this.editor.config.focus = true
 
-            // 自定义菜单栏
             this.editor.config.menus = []
 
-            // change
             this.editor.config.onchange = (html: any) => {
                 this.editorData = html
             };
 
-            // 上传最多1张
             this.editor.config.uploadImgMaxLength = 1
-            // 添加上传本地图片接口
             this.editor.config.customUploadImg = function (
                 files: any,
                 insert: Function
             ) {
                 insert(files)
             };
-            // 聚焦操作
             nextTick(() => {
                 this.editor.create()
                 this.editor.txt.html(this.editorData)
@@ -127,7 +122,6 @@ export const useMainStore = defineStore({
         },
         sendInfos(conversition: Conversition) {
             let data = {
-                // 发送内容
                 conversition
             }
             if (this.socket != null) {
@@ -151,7 +145,6 @@ export const useMainStore = defineStore({
         },
         Addfriend(id, friendId) {
             let data = {
-                // 发送内容
                 id,
                 friendId
             }
@@ -172,7 +165,6 @@ export const useMainStore = defineStore({
         deletefriends(id, friendId) {
             console.log(id, friendId)
             let data = {
-                // 发送内容
                 id,
                 friendId
             }
