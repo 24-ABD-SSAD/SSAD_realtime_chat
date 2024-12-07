@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ssda" uuid="8bf9e208-06a1-4e25-9d0e-91a4f7c9a73f">
+    <data-source source="LOCAL" name="Realtime_chat" uuid="ea4c0a38-1583-473f-949b-86c7e9e927ca">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
